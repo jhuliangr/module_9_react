@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from '#shared/components';
 
 export const Counter: React.FC = () => {
   const [counter, setCounter] = useState<number>(0);
@@ -8,12 +9,7 @@ export const Counter: React.FC = () => {
   return (
     <div className="flex-1 flex items-center justify-center gap-3">
       Counter: {counter}
-      <button
-        className="px-3 py-1 bg-gray-200 rounded-md"
-        onClick={handleIncrement}
-      >
-        Increment
-      </button>
+      <Button onClick={handleIncrement}>Increment</Button>
     </div>
   );
 };
