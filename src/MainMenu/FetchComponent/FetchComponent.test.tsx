@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { FetchComponent } from './FetchComponent';
+import { FetchSettingsComponent } from './FetchComponent';
 import { useGetGameSettings } from './useGetGameSettings';
 
 vi.mock('./useGetGameSettings', () => ({
@@ -8,18 +8,21 @@ vi.mock('./useGetGameSettings', () => ({
 }));
 
 beforeEach(() => {
-  vi.mocked(useGetGameSettings).mockReturnValue(null);
+  vi.mocked(useGetGameSettings).mockReturnValue({
+    error: false,
+    loading: true,
+  });
 });
 
 describe('FetchComponent works as expected', () => {
   it('works', () => {
-    render(<FetchComponent />);
+    render(<FetchSettingsComponent />);
   });
   it('Calls the hook', () => {
     expect(useGetGameSettings).toHaveBeenCalled();
   });
-  it('renders loading if data is null', () => {
-    render(<FetchComponent />);
-    expect(screen.getByText('Loading...')).toBeDefined();
+  it('renders loading component', () => {
+    render(<FetchSettingsComponent />);
+    expect(screen.getByTitle('Loading...')).toBeDefined();
   });
 });

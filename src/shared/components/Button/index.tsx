@@ -15,10 +15,10 @@ export const Button: React.FC<Props> = ({
   return (
     <button
       className={cn(
-        'px-3 py-1 rounded-md',
+        'px-3 py-1 rounded-md transition-colors duration-200',
         {
-          primary: 'bg-blue-500 text-white',
-          secondary: 'bg-gray-200 text-black',
+          primary: 'bg-blue-500 hover:bg-blue-400 text-white',
+          secondary: 'bg-gray-200 hover:bg-gray-100 text-black',
         }[variant],
         className,
       )}

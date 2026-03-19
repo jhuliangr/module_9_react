@@ -1,0 +1,1 @@
+export { FetchSettingsComponent } from './FetchComponent';

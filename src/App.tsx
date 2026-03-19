@@ -1,10 +1,10 @@
-import { FetchComponent } from './FetchComponent';
+import { MainMenu } from './MainMenu';
 
 function App() {
   return (
     <>
-      <h1>React.js</h1>
-      <FetchComponent />
+      <h1>React client</h1>
+      <MainMenu />
     </>
   );
 }

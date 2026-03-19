@@ -1,2 +1,7 @@
 export { GameService } from './game-service';
-export type { GetGameServerInfoResponse } from './schemas';
+export type {
+  GetGameServerInfoResponse,
+  Skin,
+  Weapon,
+  Achivement,
+} from './schemas';
