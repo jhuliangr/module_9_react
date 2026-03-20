@@ -28,4 +28,7 @@ jobs:
       - name: Check format
         run: npm run format-detect
       
+      - name: Test
+        run: npm run test
+      
       

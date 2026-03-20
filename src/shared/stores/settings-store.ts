@@ -5,6 +5,7 @@ import type { SettingsStoreState } from './types/SettingsStoreState';
 export const useSettingsStore = create<SettingsStoreState>()(
   persist(
     (set, get) => ({
+      selectedCharacter: 'Knight',
       selectedSkin: null,
       unlockedAchivements: null,
       selectedWeapon: null,
@@ -43,6 +44,10 @@ export const useSettingsStore = create<SettingsStoreState>()(
           achievements: [...achivements, newAchivement],
         });
       },
+      setSelectedCharacter: (character) =>
+        set({
+          selectedCharacter: character,
+        }),
     }),
     {
       name: 'settings-storage',
