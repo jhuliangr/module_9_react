@@ -17,15 +17,15 @@ jobs:
         uses: actions/setup-node@v4
         with: 
           node-version: 20
-          cache: npm
+          cache: "npm"
 
       - name: Install dependencies
-        uses: npm ci
+        run: npm ci
       
       - name: Lint 
-        uses: npm run lint
+        run: npm run lint
       
       - name: Check format
-        uses: npm run format-detect
+        run: npm run format-detect
       
       
