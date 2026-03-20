@@ -6,6 +6,7 @@ import type {
 } from '#shared/services/game';
 
 export type SettingsStoreState = GetGameServerInfoResponse & {
+  selectedCharacter: string;
   selectedSkin: Skin | null;
   unlockedAchivements: Achivement | null;
   selectedWeapon: Weapon | null;
@@ -13,4 +14,5 @@ export type SettingsStoreState = GetGameServerInfoResponse & {
   setUnlockedAchivements: (achivement: Achivement) => void;
   setSelectedWeapon: (weapon: Weapon) => void;
   setSettingsFromServer: (settings: GetGameServerInfoResponse) => void;
+  setSelectedCharacter: (character: string) => void;
 };
