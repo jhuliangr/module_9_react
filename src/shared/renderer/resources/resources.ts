@@ -1,39 +1,36 @@
 import {
-  DataTexture,
-  EquirectangularReflectionMapping,
   SRGBColorSpace,
   Texture,
   TextureLoader,
   type TextureEventMap,
 } from 'three';
-import { GLTFLoader, HDRLoader, type GLTF } from 'three/examples/jsm/Addons.js';
+import {
+  GLTFLoader,
+  type GLTF,
+} from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const ASSETS = [
   {
     key: 'rogue_dagger',
     type: 'gltf',
-    path: '/assets/webgl/3D_models/rogue_dagger/scene.gltf',
+    path: `${import.meta.env.BASE_URL}assets/webgl/3D_models/rogue_dagger/scene.gltf`,
   },
   {
     key: 'main_menu_bg',
     type: 'texture',
-    path: '/assets/webgl/textures/background.png',
+    path: `${import.meta.env.BASE_URL}assets/webgl/textures/background.png`,
   },
   {
     key: 'main_menu_fg',
     type: 'texture',
-    path: '/assets/webgl/textures/first_plane.png',
+    path: `${import.meta.env.BASE_URL}assets/webgl/textures/first_plane.png`,
   },
 ];
 
 export class Resources {
-  #resources: Map<
-    string,
-    GLTF | DataTexture | Texture<HTMLImageElement, TextureEventMap>
-  >;
+  #resources: Map<string, GLTF | Texture<HTMLImageElement, TextureEventMap>>;
   #loaders: {
     gltf: GLTFLoader;
-    hdrLoader: HDRLoader;
     textureLoader: TextureLoader;
   };
   #loadPromise: Promise<void> | null = null;
@@ -41,7 +38,6 @@ export class Resources {
     this.#resources = new Map();
     this.#loaders = {
       gltf: new GLTFLoader(),
-      hdrLoader: new HDRLoader(),
       textureLoader: new TextureLoader(),
     };
   }
@@ -54,19 +50,6 @@ export class Resources {
             asset.path,
             (model) => {
               this.#resources.set(asset.key, model);
-              res();
-            },
-            undefined,
-            (err) => rej(new Error(`Failed to load ${asset.path}: ${err}`)),
-          );
-        });
-      } else if (asset.type === 'hdr') {
-        return new Promise<void>((res, rej) => {
-          this.#loaders.hdrLoader.load(
-            asset.path,
-            (texture) => {
-              texture.mapping = EquirectangularReflectionMapping;
-              this.#resources.set(asset.key, texture);
               res();
             },
             undefined,

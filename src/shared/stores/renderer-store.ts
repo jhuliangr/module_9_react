@@ -8,7 +8,10 @@ interface RendererStoreState {
 }
 
 export const useRendererStore = create<RendererStoreState>((set) => {
-  resources.load().then(() => set({ ready: true }));
+  resources
+    .load()
+    .then(() => set({ ready: true }))
+    .catch(() => {});
   return {
     ready: false,
     mounted: false,
