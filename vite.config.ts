@@ -76,6 +76,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    pool: 'threads',
     setupFiles: resolve(__dirname, './src/test/setup.ts'),
     exclude: ['**/node_modules/**', '**/.git/**', '**/dist/**', '**/e2e/**'],
   },

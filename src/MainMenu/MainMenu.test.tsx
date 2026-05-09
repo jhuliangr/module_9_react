@@ -15,6 +15,12 @@ vi.mock('#shared/utils/api-client', () => ({
   },
 }));
 
+vi.mock('./Background', () => ({
+  MainMenuBackground: class {
+    dispose() {}
+  },
+}));
+
 describe('MainMenu component works as expected', () => {
   it('works', () => {
     render(

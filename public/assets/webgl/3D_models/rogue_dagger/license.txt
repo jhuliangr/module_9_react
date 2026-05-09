@@ -1,0 +1,11 @@
+Model Information:
+* title:	Dagger
+* source:	https://sketchfab.com/3d-models/dagger-82ab5a31e4d34b57a573031499c4c0cb
+* author:	Maxim (https://sketchfab.com/ploshinskymaxim)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Dagger" (https://sketchfab.com/3d-models/dagger-82ab5a31e4d34b57a573031499c4c0cb) by Maxim (https://sketchfab.com/ploshinskymaxim) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
