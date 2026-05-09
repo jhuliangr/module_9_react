@@ -5,9 +5,21 @@ import {
   LoadingComponent,
 } from '#shared/components';
 import { useGetGameSettings } from '#shared/hooks';
+import { useRendererStore } from '#shared/stores';
+import { MainMenuBackground } from './Background';
+import { useEffect } from 'react';
 import { Link } from 'react-router';
 
 export const MainMenu = () => {
+  const setMounted = useRendererStore((s) => s.setMounted);
+  useEffect(() => {
+    const scene = new MainMenuBackground();
+    setMounted(true);
+    return () => {
+      scene.dispose();
+      setMounted(false);
+    };
+  }, [setMounted]);
   const { loading, error } = useGetGameSettings();
   return (
     <div className="flex items-center justify-center flex-1">
