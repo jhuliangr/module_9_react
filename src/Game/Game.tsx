@@ -90,7 +90,7 @@ export function Game() {
         style={
           isMobile
             ? { width: '100vw', height: '100dvh', overflow: 'hidden' }
-            : { maxWidth: '800px', maxHeight: '600px' }
+            : { maxWidth: '800px', maxHeight: '600px', overflow: 'hidden' }
         }
       >
         <Hud

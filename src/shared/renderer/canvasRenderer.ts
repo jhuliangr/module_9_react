@@ -1,10 +1,4 @@
-import {
-  WebGLRenderer,
-  Scene,
-  PerspectiveCamera,
-  PCFShadowMap,
-  Mesh,
-} from 'three';
+import { WebGLRenderer, Scene, PerspectiveCamera, Mesh } from 'three';
 import Stats from 'stats.js';
 
 export abstract class CanvasRenderer {
@@ -25,9 +19,8 @@ export abstract class CanvasRenderer {
       canvas: document.querySelector('#three')!,
       antialias: true,
     });
+    this.gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     this.gl.setSize(window.innerWidth, window.innerHeight);
-    this.gl.shadowMap.enabled = true;
-    this.gl.shadowMap.type = PCFShadowMap;
     const aspect = window.innerWidth / window.innerHeight;
     this.camera = new PerspectiveCamera(50, aspect, 0.1, 100);
     this.camera.position.z = 3;
@@ -40,13 +33,13 @@ export abstract class CanvasRenderer {
   }
 
   protected update?(): void;
+  protected onResize?(w: number, h: number): void;
 
   #animate() {
     if (this.#disposed) return;
     if (this.#debug) {
       this.#stats.begin();
     }
-    this.gl.render(this.scene, this.camera);
     this.update?.();
     if (this.#debug) {
       this.#stats.end();
@@ -70,6 +63,7 @@ export abstract class CanvasRenderer {
     this.gl.setSize(w, h);
     this.camera.aspect = aspect;
     this.camera.updateProjectionMatrix();
+    this.onResize?.(w, h);
   };
   updateCamera() {
     return this.camera;
