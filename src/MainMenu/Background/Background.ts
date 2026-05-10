@@ -66,7 +66,7 @@ export class MainMenuBackground extends CanvasRenderer {
     const { scene: rogueDagger } = resources.get('rogue_dagger') as GLTF;
     this.#daggerMesh = rogueDagger;
     this.#daggerMesh.scale.set(0.2, 0.2, 0.2);
-    this.#daggerMesh.position.set(0.03, 0.19, 0);
+    this.#daggerMesh.position.set(0.03, 0.14, 0);
     this.#daggerMesh.rotation.set(1, 0, 1.57);
 
     const sharedUniforms = {

@@ -14,7 +14,7 @@ export abstract class CanvasRenderer {
   #stats!: Stats;
   #rafId: number | null = null;
   #disposed: boolean = false;
-  #debug = Boolean(import.meta.env.VITE_DEBUG === 1);
+  #debug = Boolean(import.meta.env.VITE_DEBUG == 1);
 
   constructor() {
     this.#init();
