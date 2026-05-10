@@ -81,6 +81,7 @@ export class MainMenuBackground extends CanvasRenderer {
     };
     this.#daggerUniforms = sharedUniforms;
 
+    const materialCache = new Map<string, ShaderMaterial>();
     this.#daggerMesh.traverse((obj) => {
       const m = obj as Mesh;
       if (!m.isMesh) return;
@@ -91,19 +92,25 @@ export class MainMenuBackground extends CanvasRenderer {
         map?: Texture | null;
         color?: Color;
       };
-      m.material = new ShaderMaterial({
-        vertexShader,
-        fragmentShader: fragShader,
-        transparent: true,
-        uniforms: {
-          ...sharedUniforms,
-          uMap: { value: orig?.map ?? null },
-          uHasMap: { value: orig?.map ? 1.0 : 0.0 },
-          uColor: {
-            value: orig?.color ? orig.color.clone() : new Color(0xffffff),
+      const key = `${orig?.map?.uuid ?? 'none'}:${orig?.color?.getHexString() ?? 'fff'}`;
+      let mat = materialCache.get(key);
+      if (!mat) {
+        mat = new ShaderMaterial({
+          vertexShader,
+          fragmentShader: fragShader,
+          transparent: true,
+          uniforms: {
+            ...sharedUniforms,
+            uMap: { value: orig?.map ?? null },
+            uHasMap: { value: orig?.map ? 1.0 : 0.0 },
+            uColor: {
+              value: orig?.color ?? new Color(0xffffff),
+            },
           },
-        },
-      });
+        });
+        materialCache.set(key, mat);
+      }
+      m.material = mat;
     });
 
     this.scene.add(this.#daggerMesh);
@@ -188,20 +195,19 @@ export class MainMenuBackground extends CanvasRenderer {
     }
   }
 
-  #onResize = () => {
+  protected override onResize(w: number, h: number): void {
     for (const { mesh, z } of this.#planes) this.#sizePlane(mesh, z);
-  };
+    this.#composer.resize(w, h);
+  }
 
   #initEvents() {
     window.addEventListener('mousemove', this.#onMouseMove);
-    window.addEventListener('resize', this.#onResize);
     this.#initOrientation();
   }
 
   override dispose(): void {
     this.#disposed = true;
     window.removeEventListener('mousemove', this.#onMouseMove);
-    window.removeEventListener('resize', this.#onResize);
     window.removeEventListener('deviceorientation', this.#onOrientation);
     super.dispose();
   }

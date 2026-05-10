@@ -2,6 +2,7 @@ import { BrowserRouter } from 'react-router';
 import { AppRoutes } from './routes';
 import { useRendererStore } from '#shared/stores';
 import { LoadingComponent } from '#shared/components';
+import { cn } from '#shared/utils';
 
 function AppShell() {
   const ready = useRendererStore((s) => s.ready);
@@ -15,9 +16,12 @@ function AppShell() {
   }
   return (
     <main
-      className={`flex items-center justify-center min-h-screen${
-        mounted ? '' : ' bg-brown'
-      }`}
+      className={cn(
+        'flex items-center justify-center min-h-screen max-w-svw max-h-svh',
+        {
+          'bg-brown': !mounted,
+        },
+      )}
     >
       <AppRoutes />
     </main>
