@@ -32,7 +32,9 @@ export const MainMenu = () => {
       ) : (
         <div className="flex flex-col gap-10 md:w-1/3 text-center">
           <div>
-            <h1 className="text-primary font-bold text-7xl p-3">Arena</h1>
+            <h1 className="text-primary bg-clip-text bg-white text-shadow-2xs shadow-amber-600 font-bold text-7xl p-3">
+              Arena
+            </h1>
             <p className="text-dark">Try your best to stay standing</p>
           </div>
           <Box>
