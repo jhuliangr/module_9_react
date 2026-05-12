@@ -21,7 +21,7 @@ describe('SkinSelector component works as expected', () => {
 
   it('renders one image per skin', () => {
     render(<SkinSelector />);
-    if (import.meta.env.VITE_SHOW_INCOMPLETE_SPRITES === 1) {
+    if (import.meta.env.VITE_SHOW_INCOMPLETE_SPRITES === '1') {
       expect(screen.getAllByRole('img')).toHaveLength(2);
     }
   });
@@ -34,7 +34,7 @@ describe('SkinSelector component works as expected', () => {
 
   it('does not select a skin that is still locked', () => {
     render(<SkinSelector />);
-    if (import.meta.env.VITE_SHOW_INCOMPLETE_SPRITES === 1) {
+    if (import.meta.env.VITE_SHOW_INCOMPLETE_SPRITES === '1') {
       fireEvent.click(screen.getByAltText('Locked Skin'));
       expect(useSettingsStore.getState().selectedSkin).toBeNull();
     }

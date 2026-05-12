@@ -1,5 +1,11 @@
 @import 'tailwindcss';
 
+html,
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 @theme {
   --color-primary: #646c4b;
   --color-dark: #151511;

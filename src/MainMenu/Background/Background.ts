@@ -8,6 +8,7 @@ import {
   ShaderMaterial,
   Texture,
   Timer,
+  Vector3,
   type Object3DEventMap,
 } from 'three';
 import { CanvasRenderer } from '../../shared/renderer/canvasRenderer';
@@ -38,6 +39,8 @@ export class MainMenuBackground extends CanvasRenderer {
   #clock: Timer;
   #daggerMesh: Group<Object3DEventMap> | null = null;
   #daggerUniforms: { uTime: { value: number } } | null = null;
+  #daggerTarget: HTMLElement | null = null;
+  #unprojectVec = new Vector3();
 
   constructor() {
     super();
@@ -211,6 +214,30 @@ export class MainMenuBackground extends CanvasRenderer {
     window.removeEventListener('deviceorientation', this.#onOrientation);
     super.dispose();
   }
+  setDaggerTarget(el: HTMLElement | null) {
+    this.#daggerTarget = el;
+  }
+
+  #syncDaggerToTarget(): void {
+    if (!this.#daggerMesh || !this.#daggerTarget) return;
+    const rect = this.#daggerTarget.getBoundingClientRect();
+    if (rect.width === 0 && rect.height === 0) return;
+
+    // Normalize to 0-1
+    const ndcX = ((rect.left + rect.width / 2) / window.innerWidth) * 2 - 1;
+    const ndcY = -(((rect.top + rect.height / 2) / window.innerHeight) * 2 - 1);
+
+    const v = this.#unprojectVec.set(ndcX, ndcY, 0.5).unproject(this.camera);
+    v.sub(this.camera.position);
+    if (Math.abs(v.z) < 1e-6) return;
+    const t = -this.camera.position.z / v.z;
+    this.#daggerMesh.position.set(
+      this.camera.position.x + v.x * t,
+      this.camera.position.y + v.y * t,
+      0,
+    );
+  }
+
   protected update(): void {
     this.#clock.update();
     this.camera.position.x +=
@@ -218,6 +245,7 @@ export class MainMenuBackground extends CanvasRenderer {
     this.camera.position.y +=
       (this.#targetCamY - this.camera.position.y) * LERP;
     this.camera.lookAt(0, 0, 0);
+    this.#syncDaggerToTarget();
     if (this.#daggerUniforms)
       this.#daggerUniforms.uTime.value = this.#clock.getElapsed();
     this.#composer.render();

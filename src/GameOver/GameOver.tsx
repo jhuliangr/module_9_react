@@ -9,9 +9,11 @@ export const GameOver: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      <h2 className="font-bold text-dark text-6xl">Game Over</h2>
+      <h2 className="font-bold text-red-rose text-6xl text-center">
+        Game Over
+      </h2>
       {killerName && (
-        <p className="text-dark text-xl text-center py-2">
+        <p className="text-white/80 text-xl text-center py-2">
           You were defeated by: <span className="font-bold">{killerName}</span>
         </p>
       )}

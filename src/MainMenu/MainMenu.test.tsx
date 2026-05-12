@@ -18,6 +18,7 @@ vi.mock('#shared/utils/api-client', () => ({
 vi.mock('./Background', () => ({
   MainMenuBackground: class {
     dispose() {}
+    setDaggerTarget() {}
   },
 }));
 
