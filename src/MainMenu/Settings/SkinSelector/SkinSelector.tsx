@@ -19,10 +19,8 @@ export const SkinSelector: React.FC = () => {
       {skins
         .filter(
           (s) =>
-            // !import.meta.env.VITE_SHOW_INCOMPLETE_SPRITES
-            // ?
+            import.meta.env.VITE_SHOW_INCOMPLETE_SPRITES === '1' ||
             s.id === 'skin_default',
-          // : s,
         )
         .map((skin) => (
           <img

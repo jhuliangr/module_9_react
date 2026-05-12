@@ -9,7 +9,7 @@ function AppShell() {
   const mounted = useRendererStore((s) => s.mounted);
   if (!ready) {
     return (
-      <main className="flex items-center justify-center min-h-screen bg-brown">
+      <main className="flex items-center justify-center h-dvh w-dvw overflow-hidden bg-brown">
         <LoadingComponent />
       </main>
     );
@@ -17,7 +17,7 @@ function AppShell() {
   return (
     <main
       className={cn(
-        'flex items-center justify-center min-h-screen max-w-svw max-h-svh',
+        'flex items-center justify-center h-dvh w-dvw overflow-hidden',
         {
           'bg-brown': !mounted,
         },
