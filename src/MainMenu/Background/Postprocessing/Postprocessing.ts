@@ -3,6 +3,7 @@ import {
   EffectComposer,
   EffectPass,
   RenderPass,
+  ShaderPass,
 } from 'postprocessing';
 import { type Camera, type Scene, type WebGLRenderer } from 'three';
 import { NoiseEffect } from './NoiseEffect';
@@ -41,10 +42,10 @@ export class Postprocessing {
       resolutionScale: 0.5,
     });
 
-    this.#crt = new NoiseEffect({ noise: 0.18 });
+    this.#crt = new NoiseEffect(0.18);
 
     const ep = new EffectPass(this.#camera, this.#dof);
-    const ep1 = new EffectPass(this.#camera, this.#crt);
+    const ep1 = new ShaderPass(this.#crt, 'uInput');
     this.#composer.addPass(ep);
     this.#composer.addPass(ep1);
   }
@@ -53,7 +54,8 @@ export class Postprocessing {
     this.#composer.setSize(w, h);
   }
 
-  render() {
+  render(deltaTime: number) {
+    this.#crt.update(deltaTime);
     this.#composer.render();
   }
 }

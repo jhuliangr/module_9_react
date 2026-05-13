@@ -248,7 +248,7 @@ export class MainMenuBackground extends CanvasRenderer {
     this.#syncDaggerToTarget();
     if (this.#daggerUniforms)
       this.#daggerUniforms.uTime.value = this.#clock.getElapsed();
-    this.#composer.render();
+    this.#composer.render(this.#clock.getDelta());
   }
 
   #initLights() {
