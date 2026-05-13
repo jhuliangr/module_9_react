@@ -36,7 +36,7 @@ export const MainMenu = () => {
           <ErrorComponent />
         )
       ) : (
-        <div className="flex flex-col gap-10 md:w-1/3 text-center">
+        <div className="flex flex-col gap-10 md:w-1/3 text-center select-none">
           <div>
             <h1 className="text-primary font-bold text-7xl p-3 [text-shadow:0_1px_2px_rgb(0_0_0/0.95),0_0_8px_rgb(0_0_0/0.8)]">
               Arena
