@@ -15,3 +15,5 @@ export {
   validateResponse,
   responseValidatorFactory,
 } from './validate-response';
+
+export { hashFunction } from './glsl';

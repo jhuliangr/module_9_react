@@ -1,8 +1,14 @@
-import { describe, expect, it, beforeEach } from 'vitest';
+import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { useSettingsStore } from '#shared/stores';
 import { Settings } from './Settings';
+
+vi.mock('./Background', () => ({
+  SettingsBackground: class {
+    dispose() {}
+  },
+}));
 
 describe('Settings component works as expected', () => {
   beforeEach(() => {

@@ -1,7 +1,9 @@
 import { Button, Box } from '#shared/components';
-import { useSettingsStore } from '#shared/stores';
+import { useRendererStore, useSettingsStore } from '#shared/stores';
 import { cn } from '#shared/utils';
 import { Link } from 'react-router';
+import { useEffect } from 'react';
+import { AchivementsBackground } from './Background';
 
 const CONDITION_LABELS: Record<string, string> = {
   kills: 'Kills',
@@ -11,17 +13,29 @@ const CONDITION_LABELS: Record<string, string> = {
 export const Achievements: React.FC = () => {
   const achievements = useSettingsStore((s) => s.achievements);
   const unlockedIds = useSettingsStore((s) => s.unlockedAchievementIds);
-
+  const setMounted = useRendererStore((s) => s.setMounted);
+  useEffect(() => {
+    const scene = new AchivementsBackground();
+    setMounted(true);
+    return () => {
+      scene.dispose();
+      setMounted(false);
+    };
+  }, [setMounted]);
   return (
     <div className="flex-1 flex items-center justify-center flex-col gap-5">
       <title>Achievements | Game</title>
 
       <div className="flex items-center gap-4">
         <Link to="/">
-          <Button>Back</Button>
+          <Button className="[box-shadow:0_1px_2px_rgb(0_0_0/0.95),0_0_8px_rgb(0_0_0/0.8)]">
+            Back
+          </Button>
         </Link>
-        <h1 className="text-primary font-bold text-3xl">Achievements</h1>
-        <span className="text-white/50 text-sm">
+        <h1 className="text-primary font-bold text-3xl [text-shadow:0_1px_2px_rgb(0_0_0/0.95),0_0_8px_rgb(0_0_0/0.8)]">
+          Achievements
+        </h1>
+        <span className="text-white/50 text-sm [text-shadow:0_1px_2px_rgb(0_0_0/0.95),0_0_8px_rgb(0_0_0/0.8)]">
           {unlockedIds.length}/{achievements.length}
         </span>
       </div>
