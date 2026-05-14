@@ -1,9 +1,22 @@
 import { Link } from 'react-router';
+import { useEffect } from 'react';
 import { CharacterSelector } from './CharacterSelector';
 import { SkinSelector } from './SkinSelector';
+import { SettingsBackground } from './Background';
 import { Button } from '#shared/components';
+import { useRendererStore } from '#shared/stores';
 
 export const Settings: React.FC = () => {
+  const setMounted = useRendererStore((s) => s.setMounted);
+  useEffect(() => {
+    const scene = new SettingsBackground();
+    setMounted(true);
+    return () => {
+      scene.dispose();
+      setMounted(false);
+    };
+  }, [setMounted]);
+
   return (
     <div className="flex-1 flex items-center justify-around flex-col gap-5">
       <title>Settings | Game</title>
