@@ -1,8 +1,14 @@
-import { describe, expect, it, beforeEach } from 'vitest';
+import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { useSettingsStore } from '#shared/stores';
 import { Achievements } from './Achievements';
+
+vi.mock('./Background', () => ({
+  AchivementsBackground: class {
+    dispose() {}
+  },
+}));
 
 describe('Achievements component works as expected', () => {
   beforeEach(() => {
