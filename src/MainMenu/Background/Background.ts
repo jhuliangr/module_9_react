@@ -17,6 +17,7 @@ import type { GLTF } from 'three/examples/jsm/Addons.js';
 import { Postprocessing } from './Postprocessing';
 import fragShader from './shaders/frag';
 import vertexShader from './shaders/vertex';
+import { Fireflies } from './fireflies';
 
 const TEXTURE_ASPECT = 314 / 209;
 const BG_Z = -4;
@@ -41,6 +42,7 @@ export class MainMenuBackground extends CanvasRenderer {
   #daggerUniforms: { uTime: { value: number } } | null = null;
   #daggerTarget: HTMLElement | null = null;
   #unprojectVec = new Vector3();
+  #fireflies: Fireflies | null = null;
 
   constructor() {
     super();
@@ -116,7 +118,8 @@ export class MainMenuBackground extends CanvasRenderer {
       m.material = mat;
     });
 
-    this.scene.add(this.#daggerMesh);
+    this.#fireflies = new Fireflies(700);
+    this.scene.add(this.#daggerMesh, this.#fireflies);
   }
 
   #addParallaxPlane(key: string, z: number, transparent: boolean) {
@@ -212,6 +215,7 @@ export class MainMenuBackground extends CanvasRenderer {
     this.#disposed = true;
     window.removeEventListener('mousemove', this.#onMouseMove);
     window.removeEventListener('deviceorientation', this.#onOrientation);
+    this.#composer.dispose();
     super.dispose();
   }
   setDaggerTarget(el: HTMLElement | null) {
@@ -246,8 +250,9 @@ export class MainMenuBackground extends CanvasRenderer {
       (this.#targetCamY - this.camera.position.y) * LERP;
     this.camera.lookAt(0, 0, 0);
     this.#syncDaggerToTarget();
-    if (this.#daggerUniforms)
-      this.#daggerUniforms.uTime.value = this.#clock.getElapsed();
+    const elapsed = this.#clock.getElapsed();
+    if (this.#daggerUniforms) this.#daggerUniforms.uTime.value = elapsed;
+    this.#fireflies?.update(elapsed);
     this.#composer.render(this.#clock.getDelta());
   }
 

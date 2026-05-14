@@ -1,6 +1,20 @@
 import { WebGLRenderer, Scene, PerspectiveCamera, Mesh } from 'three';
 import Stats from 'stats.js';
 
+let sharedGl: WebGLRenderer | null = null;
+
+function getSharedGl(): WebGLRenderer {
+  if (!sharedGl) {
+    sharedGl = new WebGLRenderer({
+      canvas: document.querySelector('#three')!,
+      antialias: true,
+    });
+    sharedGl.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    sharedGl.setSize(window.innerWidth, window.innerHeight);
+  }
+  return sharedGl;
+}
+
 export abstract class CanvasRenderer {
   protected gl!: WebGLRenderer;
   protected camera!: PerspectiveCamera;
@@ -14,12 +28,8 @@ export abstract class CanvasRenderer {
     this.#init();
     this.#initEvents();
   }
-  async #init() {
-    this.gl = new WebGLRenderer({
-      canvas: document.querySelector('#three')!,
-      antialias: true,
-    });
-    this.gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  #init() {
+    this.gl = getSharedGl();
     this.gl.setSize(window.innerWidth, window.innerHeight);
     const aspect = window.innerWidth / window.innerHeight;
     this.camera = new PerspectiveCamera(50, aspect, 0.1, 100);
@@ -73,13 +83,13 @@ export abstract class CanvasRenderer {
     if (this.#rafId !== null) cancelAnimationFrame(this.#rafId);
     window.removeEventListener('resize', this.#resize);
     this.#stats.dom.remove();
-    this.gl.clear();
-    this.gl.dispose();
     this.scene.traverse((obj) => {
       if ('geometry' in obj) (obj as Mesh).geometry?.dispose();
       const mat = (obj as Mesh).material;
       if (Array.isArray(mat)) mat.forEach((m) => m.dispose());
       else mat?.dispose();
     });
+    this.gl.setRenderTarget(null);
+    this.gl.clear();
   }
 }

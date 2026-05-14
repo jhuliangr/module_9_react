@@ -58,4 +58,8 @@ export class Postprocessing {
     this.#crt.update(deltaTime);
     this.#composer.render();
   }
+
+  dispose() {
+    this.#composer.dispose();
+  }
 }
