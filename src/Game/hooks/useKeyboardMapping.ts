@@ -34,11 +34,18 @@ function keysToVector(keys: Set<string>): { dx: number; dy: number } {
  * ~25ms rate limit), cutting the worst-case input latency from ~50ms
  * (old setInterval) to ~1 frame (~16ms at 60Hz).
  */
-export function useKeyboardMapping(joined: boolean) {
+export function useKeyboardMapping(
+  joined: boolean,
+  getYaw?: () => number | null | undefined,
+) {
   const keysRef = useRef<Set<string>>(new Set());
   const lastSentDx = useRef(0);
   const lastSentDy = useRef(0);
   const lastSentAt = useRef(-Infinity);
+  const getYawRef = useRef(getYaw);
+  useEffect(() => {
+    getYawRef.current = getYaw;
+  }, [getYaw]);
 
   useEffect(() => {
     if (!joined) return;
@@ -63,9 +70,18 @@ export function useKeyboardMapping(joined: boolean) {
         sinceLast >= MIN_SEND_INTERVAL_MS &&
         (changed || sinceLast >= HOLD_REPEAT_MS)
       ) {
+        const yaw = getYawRef.current?.();
+        let sendDx = dx;
+        let sendDy = dy;
+        if (yaw != null) {
+          const c = Math.cos(yaw);
+          const s = Math.sin(yaw);
+          sendDx = dx * c + dy * s;
+          sendDy = -dx * s + dy * c;
+        }
         const tick = gameSocket.nextClientTick();
-        predictionEngine.applyLocalMove(dx, dy, tick);
-        gameSocket.move(dx, dy, tick);
+        predictionEngine.applyLocalMove(sendDx, sendDy, tick);
+        gameSocket.move(sendDx, sendDy, tick);
         lastSentDx.current = dx;
         lastSentDy.current = dy;
         lastSentAt.current = now;
