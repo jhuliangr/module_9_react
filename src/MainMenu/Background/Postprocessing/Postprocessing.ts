@@ -37,7 +37,6 @@ export class Postprocessing {
     this.#composer.addPass(rp);
 
     this.#dof = new DepthOfFieldEffect(this.#camera, {
-      // bokehScale: 0.7,
       focusRange: 1,
       resolutionScale: 0.5,
     });

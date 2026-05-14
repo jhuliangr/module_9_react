@@ -7,7 +7,7 @@ function getSharedGl(): WebGLRenderer {
   if (!sharedGl) {
     sharedGl = new WebGLRenderer({
       canvas: document.querySelector('#three')!,
-      antialias: true,
+      antialias: false,
     });
     sharedGl.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     sharedGl.setSize(window.innerWidth, window.innerHeight);
