@@ -23,9 +23,13 @@ export const Settings: React.FC = () => {
       <div className="flex flex-col items-center justify-between gap-5 md:pt-0 pt-10">
         <div className="flex justify-between items-center w-full px-5">
           <Link to="/">
-            <Button>Back</Button>
+            <Button className="[box-shadow:0_1px_2px_rgb(0_0_0/0.95),0_0_8px_rgb(0_0_0/0.8)]">
+              Back
+            </Button>
           </Link>
-          <div className="text-3xl text-white/70 font-bold">Settings</div>
+          <div className="text-3xl text-white/70 font-bold [text-shadow:0_1px_2px_rgb(0_0_0/0.95),0_0_8px_rgb(0_0_0/0.8)]">
+            Settings
+          </div>
           <div></div>
         </div>
         <CharacterSelector />

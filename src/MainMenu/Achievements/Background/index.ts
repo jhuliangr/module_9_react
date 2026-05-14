@@ -1,0 +1,1 @@
+export { AchivementsBackground } from './Background';

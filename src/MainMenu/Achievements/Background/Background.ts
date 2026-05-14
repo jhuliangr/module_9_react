@@ -18,7 +18,7 @@ const MAX_RIPPLES = 32;
 const SPAWN_INTERVAL_MS = 90;
 const SPAWN_MIN_DIST = 0.012;
 
-export class SettingsBackground extends CanvasRenderer {
+export class AchivementsBackground extends CanvasRenderer {
   #disposed = false;
   #clock: Timer;
   #plane: Mesh | null = null;
@@ -34,8 +34,8 @@ export class SettingsBackground extends CanvasRenderer {
     uTime: { value: 0 },
     uMouse: { value: new Vector2(0.5, 0.5) },
     uAspect: { value: 1 },
-    uColor: { value: new Color('#5e8a3a') },
-    uClickColor: { value: new Color('#e0c83b') },
+    uColor: { value: new Color('#C0B7B1') },
+    uClickColor: { value: new Color('#87255B') },
     uNoise: { value: 0.22 },
     uRipples: { value: this.#ripples },
   };

@@ -11,7 +11,7 @@ import {
   Vector3,
   type Object3DEventMap,
 } from 'three';
-import { CanvasRenderer } from '../../shared/renderer/canvasRenderer';
+import { CanvasRenderer } from '#shared/renderer';
 import { resources } from '#shared/renderer/resources';
 import type { GLTF } from 'three/examples/jsm/Addons.js';
 import { Postprocessing } from './Postprocessing';

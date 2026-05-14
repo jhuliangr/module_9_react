@@ -13,7 +13,7 @@ export default /* glsl */ `
   varying float vDispGreen;
   varying float vDispYellow;
 
- ${hashFunction}
+  ${hashFunction}
 
   void main() {
     vec3 col = vec3(0.0);
@@ -28,7 +28,7 @@ export default /* glsl */ `
     float rim = smoothstep(0.0, 0.015, magnitude) -
                 smoothstep(0.015, 0.05, magnitude);
 
-    float glow = halo * 0.25 + crest * 0.55 + rim * 0.9;
+    float glow = halo * 0.15 + crest * 0.55 + rim * 0.2;
 
     float yellowness = abs(vDispYellow) /
                        (abs(vDispGreen) + abs(vDispYellow) + 0.0001);
