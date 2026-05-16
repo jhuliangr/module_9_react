@@ -1,0 +1,1 @@
+export { PlayerRigs } from './PlayerRigs';

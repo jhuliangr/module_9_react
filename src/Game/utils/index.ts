@@ -1,10 +1,4 @@
-export {
-  CANVAS_H,
-  CANVAS_W,
-  SCALE_X,
-  SCALE_Y,
-  WORLD_SIZE,
-} from './canvasConstants';
+export { CANVAS_H, CANVAS_W, SCALE_X, SCALE_Y } from './canvasConstants';
 export { renderAttack } from './renderAttack';
 export type { CharacterDefinition } from '../characters';
 export { renderBackground } from './renderBackground';

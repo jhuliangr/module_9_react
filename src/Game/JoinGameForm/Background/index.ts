@@ -1,0 +1,1 @@
+export { JoinGameBackground } from './Background';

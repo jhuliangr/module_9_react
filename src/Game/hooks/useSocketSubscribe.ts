@@ -11,8 +11,8 @@ import { useGameStore, useSettingsStore } from '#shared/stores';
 import type { Achivement } from '#shared/services/game';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { predictionEngine } from '../engine/predictionEngine';
-import { snapshotInterpolator } from '../engine/snapshotInterpolator';
+import { predictionEngine } from '#shared/engine';
+import { snapshotInterpolator } from '#shared/engine';
 
 const PLAYER_ID_KEY = 'multiplayer.playerId';
 

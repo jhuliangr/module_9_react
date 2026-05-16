@@ -12,6 +12,16 @@ const mockState = {
   clearAchievementNotification: vi.fn(),
 };
 
+// JoinGameBackground constructs a WebGLRenderer, which crashes in jsdom
+// because the shared #three canvas only exists in index.html. Stubbed
+// so the form can mount without exploding.
+vi.mock('./JoinGameForm/Background', () => ({
+  JoinGameBackground: class {
+    dispose() {}
+    setDaggerTarget() {}
+  },
+}));
+
 vi.mock('./hooks', () => ({
   useSocketSubscribe: () => mockState,
   useIsMobile: () => false,

@@ -1,6 +1,5 @@
 import {
   Color,
-  DirectionalLight,
   Group,
   Mesh,
   MeshBasicMaterial,
@@ -54,7 +53,6 @@ export class MainMenuBackground extends CanvasRenderer {
       scene: this.scene,
       camera: this.camera,
     });
-    this.#initLights();
     this.#initScene();
     this.#initEvents();
 
@@ -254,19 +252,5 @@ export class MainMenuBackground extends CanvasRenderer {
     if (this.#daggerUniforms) this.#daggerUniforms.uTime.value = elapsed;
     this.#fireflies?.update(elapsed);
     this.#composer.render(this.#clock.getDelta());
-  }
-
-  #initLights() {
-    const light = new DirectionalLight();
-    light.position.set(2, 2, 3);
-    light.intensity = 3;
-    this.scene.add(light);
-
-    const light2 = new DirectionalLight();
-    light2.position.x = -2;
-    light2.position.y = -2;
-    light2.intensity = 3;
-
-    this.scene.add(light2);
   }
 }

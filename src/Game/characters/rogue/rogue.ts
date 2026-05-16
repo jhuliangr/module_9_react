@@ -1,5 +1,5 @@
-import { characterRegistry } from './registry';
-import type { CharacterDefinition, RenderContext } from './types';
+import { characterRegistry } from '../registry';
+import type { CharacterDefinition, RenderContext } from '../types';
 
 const PLAYER_RADIUS = 12;
 

@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useGameStore } from '#shared/stores';
-import { JoinGameForm } from './JoinGameForm';
+import { JoinGameForm, type JoinMode } from './JoinGameForm/JoinGameForm';
+import { Game3D } from './Game3D';
 import { Hud } from './Hud';
 import { Joystick } from './Joystick';
 import {
@@ -32,8 +33,14 @@ export function Game() {
   } = useSocketSubscribe();
 
   const isMobile = useIsMobile();
+  const [mode, setMode] = useState<JoinMode>('classic');
 
-  useKeyboardMapping(joined && !isMobile);
+  const handleJoin = (name: string, selectedMode: JoinMode) => {
+    setMode(selectedMode);
+    join(name);
+  };
+
+  useKeyboardMapping(joined && !isMobile && mode === 'classic');
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const { myPlayerId, players } = useGameStore();
@@ -80,7 +87,11 @@ export function Game() {
     );
   }
 
-  if (!joined) return <JoinGameForm onJoin={join} />;
+  if (!joined) return <JoinGameForm onJoin={handleJoin} />;
+
+  if (mode === 'third-person') {
+    return <Game3D leave={leave} />;
+  }
 
   return (
     <>
