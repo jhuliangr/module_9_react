@@ -2,7 +2,7 @@
 
 A top-down real-time multiplayer arena game built with React, TypeScript, and WebSockets. Players join a shared 2000x2000 world, move freely, attack each other, gain XP, and level up. The game canvas runs at 60 fps via a dedicated `requestAnimationFrame` loop fully decoupled from React's render cycle.
 
-**Live site:** [https://module-9-react.vercel.app/](https://module-9-react.vercel.app/)
+**Live site:** [https://jhuliangr.github.io/react_free_for_all_game_client/](https://jhuliangr.github.io/react_free_for_all_game_client/)
 
 ---
 
