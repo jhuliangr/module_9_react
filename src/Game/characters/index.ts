@@ -6,7 +6,7 @@ export type {
 export { characterRegistry } from './registry';
 
 // Side-effect imports: register all built-in characters
-import './knight';
-import './mage';
-import './rogue';
-import './golem';
+import './knight/knight';
+import './mage/mage';
+import './rogue/rogue';
+import './golem/golem';

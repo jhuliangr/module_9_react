@@ -150,5 +150,3 @@ export class SnapshotInterpolator {
     return this.buffers.get(id)?.length ?? 0;
   }
 }
-
-export const snapshotInterpolator = new SnapshotInterpolator();

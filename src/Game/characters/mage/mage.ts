@@ -1,9 +1,9 @@
-import { characterRegistry } from './registry';
+import { characterRegistry } from '../registry';
 import type {
   CharacterDefinition,
   PlayerRenderContext,
   RenderContext,
-} from './types';
+} from '../types';
 
 const PLAYER_RADIUS = 12;
 const DOT_VISIBLE_MS = 5000;

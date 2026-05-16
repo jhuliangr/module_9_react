@@ -1,6 +1,17 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
+
+// JoinGameBackground constructs a WebGLRenderer, which crashes in jsdom
+// because the shared #three canvas only exists in index.html. We stub it
+// to a no-op so the form's useEffect runs cleanly.
+vi.mock('./Background', () => ({
+  JoinGameBackground: class {
+    dispose() {}
+    setDaggerTarget() {}
+  },
+}));
+
 import { JoinGameForm } from './JoinGameForm';
 
 describe('JoinGameForm component works as expected', () => {

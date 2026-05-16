@@ -1,6 +1,6 @@
 import { gameSocket } from '#shared/services/websocket';
 import { useEffect, useRef } from 'react';
-import { predictionEngine } from '../engine/predictionEngine';
+import { predictionEngine } from '#shared/engine';
 
 // Matches the server's MOVE_MIN_INTERVAL_MS (25ms) with a small cushion
 // to absorb RAF jitter at 60Hz without dropping honest inputs. The

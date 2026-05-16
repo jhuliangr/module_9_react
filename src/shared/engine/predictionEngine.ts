@@ -1,8 +1,8 @@
+import { WORLD_SIZE } from '#shared/constants';
 import type {
   StateUpdateMessage,
   WelcomeMessage,
 } from '#shared/services/websocket';
-import { WORLD_SIZE } from '../utils/canvasConstants';
 
 // Mirrors server physics: 200 u/s cap at 50ms tick = 10 units per accepted move.
 const MOVE_STEP = 10;
@@ -187,5 +187,3 @@ export class PredictionEngine {
     return this.confirmedPos ? { ...this.confirmedPos } : null;
   }
 }
-
-export const predictionEngine = new PredictionEngine();

@@ -1,4 +1,5 @@
-import { SCALE_X, SCALE_Y, WORLD_SIZE } from './canvasConstants';
+import { WORLD_SIZE } from '#shared/constants';
+import { SCALE_X, SCALE_Y } from './canvasConstants';
 
 const WORLD_W = WORLD_SIZE * SCALE_X;
 const WORLD_H = WORLD_SIZE * SCALE_Y;

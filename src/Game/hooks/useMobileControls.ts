@@ -2,7 +2,7 @@ import { gameSocket } from '#shared/services/websocket';
 import { useSettingsStore } from '#shared/stores';
 import { useCallback, useEffect, useRef } from 'react';
 import { characterRegistry } from '../characters';
-import { predictionEngine } from '../engine/predictionEngine';
+import { predictionEngine } from '#shared/engine';
 
 // Matches server MOVE_MIN_INTERVAL_MS (25ms) with a small cushion for
 // RAF scheduling jitter. Direction changes bypass the hold-repeat

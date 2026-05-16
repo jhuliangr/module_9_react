@@ -3,8 +3,8 @@ import { clockSync } from '#shared/services/clock-sync';
 import type { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
 import { characterRegistry } from '../characters';
-import { predictionEngine } from '../engine/predictionEngine';
-import { snapshotInterpolator } from '../engine/snapshotInterpolator';
+import { predictionEngine } from '#shared/engine';
+import { snapshotInterpolator } from '#shared/engine';
 import type { AnimationMap } from './usePlayerAnimations';
 import {
   CANVAS_H,

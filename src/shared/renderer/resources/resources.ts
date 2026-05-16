@@ -16,6 +16,11 @@ const ASSETS = [
     path: `${import.meta.env.BASE_URL}assets/webgl/3D_models/rogue_dagger/scene.gltf`,
   },
   {
+    key: 'mage',
+    type: 'gltf',
+    path: `${import.meta.env.BASE_URL}assets/webgl/3D_models/my_mage/mage.gltf`,
+  },
+  {
     key: 'main_menu_bg',
     type: 'texture',
     path: `${import.meta.env.BASE_URL}assets/webgl/textures/background.png`,
@@ -24,6 +29,11 @@ const ASSETS = [
     key: 'main_menu_fg',
     type: 'texture',
     path: `${import.meta.env.BASE_URL}assets/webgl/textures/first_plane.png`,
+  },
+  {
+    key: 'noise_cloudy',
+    type: 'texture',
+    path: `${import.meta.env.BASE_URL}assets/webgl/textures/cloudy_noise.jpg`,
   },
 ];
 
