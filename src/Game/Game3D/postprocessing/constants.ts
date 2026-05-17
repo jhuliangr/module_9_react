@@ -1,1 +1,0 @@
-export const MAX_DISTORTION_PICKUPS = 32;

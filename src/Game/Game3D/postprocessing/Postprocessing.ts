@@ -4,14 +4,7 @@ import {
   EffectPass,
   RenderPass,
 } from 'postprocessing';
-import {
-  MirroredRepeatWrapping,
-  type Camera,
-  type Scene,
-  type Texture,
-  type WebGLRenderer,
-} from 'three';
-import { resources } from '#shared/renderer/resources';
+import { type Camera, type Scene, type WebGLRenderer } from 'three';
 
 export class Postprocessing {
   #composer: EffectComposer;
@@ -36,9 +29,6 @@ export class Postprocessing {
       radius: 0.7,
     });
     this.#composer.addPass(new EffectPass(camera, bloom));
-    const noise = resources.get('noise_cloudy') as Texture;
-    noise.wrapS = MirroredRepeatWrapping;
-    noise.wrapT = MirroredRepeatWrapping;
   }
 
   resize(w: number, h: number) {
