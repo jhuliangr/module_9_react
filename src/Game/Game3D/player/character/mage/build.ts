@@ -1,6 +1,6 @@
 import type { GLTF } from 'three/examples/jsm/Addons.js';
 import type { AnimSet, AttackEffect, PlayerRig } from '../../types';
-import { clone as cloneSkinned } from 'three/examples/jsm/utils/SkeletonUtils.js';
+import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import { AnimationMixer, Mesh, Object3D, SphereGeometry } from 'three';
 import { setupAnimSet } from '../../animations';
 import { createAttackMaterial, createAttackParticles } from './attack';
@@ -13,7 +13,7 @@ import {
 export const MAGE_SCALE = 0.5;
 
 export function buildMageRig(mageGltf: GLTF): PlayerRig {
-  const model = cloneSkinned(mageGltf.scene);
+  const model = clone(mageGltf.scene);
   model.scale.setScalar(MAGE_SCALE);
   model.position.y = PLAYER_HEIGHT / 2 - 0.9;
 
@@ -22,6 +22,8 @@ export function buildMageRig(mageGltf: GLTF): PlayerRig {
 
   let mixer: AnimationMixer | null = null;
   let anim: AnimSet | null = null;
+
+  // Assign animations to model
   if (mageGltf.animations.length > 0) {
     mixer = new AnimationMixer(model);
     anim = setupAnimSet(mixer, mageGltf.animations);
@@ -29,6 +31,7 @@ export function buildMageRig(mageGltf: GLTF): PlayerRig {
 
   const attackMaterial = createAttackMaterial();
   const attackMesh = new Mesh(new SphereGeometry(0.5, 24, 24), attackMaterial);
+  // The attack must only be visible when triggered
   attackMesh.visible = false;
   const attackEffect: AttackEffect = {
     mesh: attackMesh,
@@ -41,6 +44,7 @@ export function buildMageRig(mageGltf: GLTF): PlayerRig {
   const attackContainer = new Object3D();
   attackContainer.add(attackMesh, attackParticles.points);
 
+  // Particles for the Damage on Time of the mage attack
   const dotParticles = createDotParticles();
   dotParticles.points.position.set(0, DOT_PARTICLE_Y, 0);
   group.add(dotParticles.points);
