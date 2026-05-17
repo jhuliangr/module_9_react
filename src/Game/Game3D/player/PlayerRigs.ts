@@ -1,15 +1,17 @@
-import { MeshStandardMaterial, Vector3, type Scene } from 'three';
+import { MeshStandardMaterial, Sprite, Vector3, type Scene } from 'three';
 import type { AttackEffect, AttackParticles, PlayerRig } from './types';
-import { prepareMageTemplate } from './utils/prepareMageTemplate';
+import { prepareMageTemplate } from './character';
 import type { Player } from '#shared/services/websocket';
 import { snapshotInterpolator } from '#shared/engine';
 import { predictionEngine } from '#shared/engine';
-import { getMageGltf, lerp } from './utils';
+import { advanceTimedFX, lerp } from './utils';
 import { worldToScene } from '../coords';
-import { buildRig } from './character/default/build';
-import { advanceTimedFX } from './fx';
 import {
   ANIM_BLEND_LERP,
+  ATTACK_DURATION_MS,
+  ATTACK_END_Z,
+  ATTACK_START_Z,
+  ATTACK_Y,
   DOT_PARTICLE_TOTAL_MS,
   FACING_LERP,
   FACING_MIN_DELTA,
@@ -19,12 +21,8 @@ import {
   REMOTE_SNAP_THRESHOLD,
   WALK_MIN_DELTA,
 } from '#shared/renderer/utils/constants';
-import {
-  ATTACK_DURATION_MS,
-  ATTACK_END_Z,
-  ATTACK_START_Z,
-  ATTACK_Y,
-} from './character/mage/mage';
+import { buildRig } from './character';
+import { createNameLabel, disposeNameLabel } from './nameLabel';
 
 const TWO_PI = Math.PI * 2;
 
@@ -36,6 +34,7 @@ interface WorldPos {
 export class PlayerRigs {
   #scene: Scene;
   #rigs: Map<string, PlayerRig> = new Map();
+  #nameLabels: Map<string, Sprite> = new Map();
   #tempVec = new Vector3();
   #tempWorldPos: WorldPos = { x: 0, y: 0 };
 
@@ -51,13 +50,15 @@ export class PlayerRigs {
     now: number,
     renderTime: number,
   ): { x: number; z: number } | null {
+    // Play animations of players
     for (const rig of this.#rigs.values()) rig.mixer?.update(dt);
 
+    // Remove players
     for (const id of [...this.#rigs.keys()]) {
       if (!players[id]) this.#removeRig(id);
     }
 
-    let mePos: { x: number; z: number } | null = null;
+    let myPos: { x: number; z: number } | null = null;
 
     for (const p of Object.values(players)) {
       const isMe = p.id === myPlayerId;
@@ -67,11 +68,17 @@ export class PlayerRigs {
         isMe ? 0x4cd2ff : 0xff8a4c,
       );
 
+      if (!isMe && !this.#nameLabels.has(p.id)) {
+        const label = createNameLabel(p.name);
+        rig.group.add(label);
+        this.#nameLabels.set(p.id, label);
+      }
+
       const worldPos = this.#resolveWorldPos(p, isMe, renderTime);
       const scenePos = worldToScene(worldPos.x, worldPos.y);
       rig.group.position.x = scenePos.x;
       rig.group.position.z = scenePos.z;
-      if (isMe) mePos = scenePos;
+      if (isMe) myPos = scenePos;
 
       const moveMag = this.#updateFacingTarget(rig, worldPos, isMe);
       this.#updateAnim(rig, moveMag, now);
@@ -81,7 +88,7 @@ export class PlayerRigs {
       this.#updateDotParticles(rig, now);
     }
 
-    return mePos;
+    return myPos;
   }
 
   triggerAttack(playerId: string, angle: number): void {
@@ -140,10 +147,12 @@ export class PlayerRigs {
         x: p.x,
         y: p.y,
       });
+      // Set prediction or server position
       out.x = pred?.x ?? p.x;
       out.y = pred?.y ?? p.y;
       return out;
     }
+    // use interpolator for other players's positions
     const interpolated = snapshotInterpolator.getRenderPosition(
       p.id,
       renderTime,
@@ -193,6 +202,7 @@ export class PlayerRigs {
 
   #applyFacing(rig: PlayerRig): void {
     if (rig.targetFacing === null) return;
+
     const target = rig.targetFacing;
     const current = rig.currentFacing ?? target;
     let diff = target - current;
@@ -226,6 +236,7 @@ export class PlayerRigs {
       walkTarget = 1;
     } else {
       idleBucket = 1;
+      // if the player does't moves in IDLE_DELAY_MS then play idle animation
       if (idle && !anim.idlePlaying) {
         const since = now - Math.max(anim.lastMovingAt, anim.idleEndedAt);
         if (since >= IDLE_DELAY_MS) {
@@ -239,6 +250,7 @@ export class PlayerRigs {
     const idleActiveTarget = anim.idlePlaying ? idleBucket : 0;
     const idleRestTarget = anim.idlePlaying ? 0 : idleBucket;
 
+    // Make soft transitions between animations
     if (idle) {
       idle.weight = lerp(idle.weight, idleActiveTarget, ANIM_BLEND_LERP);
     }
@@ -275,16 +287,14 @@ export class PlayerRigs {
 
   #upsertRig(id: string, character: string, color: number): PlayerRig {
     const existing = this.#rigs.get(id);
-    const needsUpgrade =
-      existing &&
-      (existing.character !== character ||
-        (character === 'mage' && !existing.hasModel && getMageGltf()));
+    const needsUpgrade = existing && character === 'mage' && !existing.hasModel;
 
     if (existing && !needsUpgrade) return existing;
 
     if (existing) {
       const x = existing.group.position.x;
       const z = existing.group.position.z;
+      // replace rig
       this.#disposeRig(existing);
       const rig = buildRig(character, color);
       rig.group.position.set(x, rig.group.position.y, z);
@@ -294,6 +304,7 @@ export class PlayerRigs {
       return rig;
     }
 
+    // create from scratch
     const rig = buildRig(character, color);
     this.#scene.add(rig.group);
     if (rig.attackContainer) this.#scene.add(rig.attackContainer);
@@ -311,7 +322,7 @@ export class PlayerRigs {
       if (Array.isArray(mat)) mat.forEach((m) => m.dispose());
       else (mat as MeshStandardMaterial).dispose();
     }
-
+    // Prevent memory leaks
     rig.attackEffect?.mesh.geometry.dispose();
     rig.attackEffect?.material.dispose();
     rig.attackParticles?.points.geometry.dispose();
@@ -323,6 +334,12 @@ export class PlayerRigs {
   #removeRig(id: string): void {
     const rig = this.#rigs.get(id);
     if (!rig) return;
+    const label = this.#nameLabels.get(id);
+    if (label) {
+      rig.group.remove(label);
+      disposeNameLabel(label);
+      this.#nameLabels.delete(id);
+    }
     this.#disposeRig(rig);
     this.#rigs.delete(id);
     snapshotInterpolator.drop(id);

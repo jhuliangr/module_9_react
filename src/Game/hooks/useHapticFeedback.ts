@@ -46,11 +46,7 @@ export function useHapticFeedback() {
 
     return () => {
       unsub();
-      // Cancel any queued vibration on unmount (e.g. navigating away
-      // mid-hit). 0 means "stop now". Re-check support here — the API
-      // can go away in tests that reset navigator between mount and
-      // cleanup, and we don't want to crash on teardown.
-      if (supportsVibration()) navigator.vibrate(0);
+      if (lastVibrateAt > 0 && supportsVibration()) navigator.vibrate(0);
     };
   }, []);
 }

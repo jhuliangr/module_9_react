@@ -31,14 +31,27 @@ A top-down real-time multiplayer arena game built with React, TypeScript, and We
 
 ### Prerequisites
 
-- Node.js >= 18
-- npm
+- **Node.js** — the exact version is pinned in [`.nvmrc`](./.nvmrc). Run `nvm use` to switch to it.
+- **pnpm** (recommended) or npm
 
 ### Install dependencies
 
 ```bash
-npm install
+nvm use         # picks up the version from .nvmrc
+pnpm install    # or: npm install
 ```
+
+### Run the game
+
+```bash
+pnpm dev        # or: npm run dev
+```
+
+Then open `http://localhost:5173` in the browser. Choose your character on the settings screen, click Play, and join with a name.
+
+### Design notes
+
+For the rationale behind the 3D renderer (lighting, shaders, postprocessing, performance trade-offs) see [DESIGN.md](./DESIGN.md).
 
 ### Environment variables
 

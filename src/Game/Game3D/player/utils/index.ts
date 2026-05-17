@@ -1,2 +1,1 @@
-export { lerp } from './functions';
-export { prepareMageTemplate, getMageGltf } from './prepareMageTemplate';
+export { lerp, advanceTimedFX } from './functions';

@@ -1,7 +1,5 @@
 import type { PlayerRig } from '../../types';
-import { buildMageRig } from '../../character/mage/build';
 import { BoxGeometry, Mesh, MeshStandardMaterial, Object3D } from 'three';
-import { getMageGltf } from '../../utils';
 import { createDotParticles } from '#shared/renderer/utils/particles';
 import {
   DOT_PARTICLE_Y,
@@ -9,18 +7,18 @@ import {
   PLAYER_RADIUS,
 } from '#shared/renderer/utils/constants';
 
-export function buildRig(character: string, color: number): PlayerRig {
-  const mageGltf = character === 'mage' ? getMageGltf() : null;
-  if (mageGltf) return buildMageRig(mageGltf);
-  return buildBoxRig(character, color);
-}
-
-function buildBoxRig(character: string, color: number): PlayerRig {
-  const mesh = new Mesh(
-    new BoxGeometry(PLAYER_RADIUS * 2, PLAYER_HEIGHT, PLAYER_RADIUS * 2),
-    new MeshStandardMaterial({ color }),
+// Generic placeholder for not created characters (A cube :D)
+export function buildBoxRig(character: string, color: number): PlayerRig {
+  const geometry = new BoxGeometry(
+    PLAYER_RADIUS * 2,
+    PLAYER_HEIGHT,
+    PLAYER_RADIUS * 2,
   );
+  const material = new MeshStandardMaterial({ color });
+
+  const mesh = new Mesh(geometry, material);
   mesh.position.y = PLAYER_HEIGHT;
+  mesh.castShadow = true;
   const group = new Object3D();
   group.add(mesh);
 
