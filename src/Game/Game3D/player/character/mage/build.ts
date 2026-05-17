@@ -15,7 +15,7 @@ export const MAGE_SCALE = 0.5;
 export function buildMageRig(mageGltf: GLTF): PlayerRig {
   const model = cloneSkinned(mageGltf.scene);
   model.scale.setScalar(MAGE_SCALE);
-  model.position.y = PLAYER_HEIGHT / 2 - 0.7;
+  model.position.y = PLAYER_HEIGHT / 2 - 0.9;
 
   const group = new Object3D();
   group.add(model);
