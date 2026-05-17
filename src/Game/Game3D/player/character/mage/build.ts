@@ -16,6 +16,12 @@ export function buildMageRig(mageGltf: GLTF): PlayerRig {
   const model = clone(mageGltf.scene);
   model.scale.setScalar(MAGE_SCALE);
   model.position.y = PLAYER_HEIGHT / 2 - 0.9;
+  // make every component of the model to cast Shadow
+  model.traverse((child) => {
+    if ((child as Mesh).isMesh) {
+      child.castShadow = true;
+    }
+  });
 
   const group = new Object3D();
   group.add(model);

@@ -9,11 +9,16 @@ import {
 
 // Generic placeholder for not created characters (A cube :D)
 export function buildBoxRig(character: string, color: number): PlayerRig {
-  const mesh = new Mesh(
-    new BoxGeometry(PLAYER_RADIUS * 2, PLAYER_HEIGHT, PLAYER_RADIUS * 2),
-    new MeshStandardMaterial({ color }),
+  const geometry = new BoxGeometry(
+    PLAYER_RADIUS * 2,
+    PLAYER_HEIGHT,
+    PLAYER_RADIUS * 2,
   );
+  const material = new MeshStandardMaterial({ color });
+
+  const mesh = new Mesh(geometry, material);
   mesh.position.y = PLAYER_HEIGHT;
+  mesh.castShadow = true;
   const group = new Object3D();
   group.add(mesh);
 
