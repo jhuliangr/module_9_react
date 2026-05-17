@@ -11,14 +11,7 @@ import {
   IDLE_TIME_SCALE,
   WALK_TIME_SCALE,
 } from '#shared/renderer/utils/constants';
-
-function findClip(
-  clips: AnimationClip[],
-  keyword: string,
-): AnimationClip | null {
-  const k = keyword.toLowerCase();
-  return clips.find((c) => c.name.toLowerCase().includes(k)) ?? null;
-}
+import { findClip } from './utils';
 
 export function setupAnimSet(
   mixer: AnimationMixer,
@@ -70,6 +63,7 @@ export function setupAnimSet(
     lastMovingAt: performance.now(),
   };
 
+  // keeping track of when animations are finished
   mixer.addEventListener('finished', (e) => {
     const action = (e as { action: AnimationAction }).action;
     if (attack && action === attack) {
