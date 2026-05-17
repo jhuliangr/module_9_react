@@ -1,9 +1,11 @@
 import {
+  ACESFilmicToneMapping,
   AmbientLight,
   Color,
   DirectionalLight,
   FogExp2,
   PCFShadowMap,
+  SRGBColorSpace,
   WebGLRenderTarget,
 } from 'three';
 import { CanvasRenderer } from '#shared/renderer';
@@ -40,6 +42,9 @@ export class Game3DRenderer extends CanvasRenderer {
     this.gl.shadowMap.enabled = true;
     this.gl.shadowMap.type = PCFShadowMap;
     this.gl.shadowMap.autoUpdate = true;
+    this.gl.outputColorSpace = SRGBColorSpace;
+    this.gl.toneMapping = ACESFilmicToneMapping;
+    this.gl.toneMappingExposure = 1.0;
 
     const fogColor = new Color(0x0a0a0a);
     this.scene.background = fogColor;

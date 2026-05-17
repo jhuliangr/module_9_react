@@ -3,6 +3,8 @@ import {
   EffectComposer,
   EffectPass,
   RenderPass,
+  SMAAEffect,
+  SMAAPreset,
 } from 'postprocessing';
 import { type Camera, type Scene, type WebGLRenderer } from 'three';
 
@@ -28,7 +30,8 @@ export class Postprocessing {
       mipmapBlur: true,
       radius: 0.7,
     });
-    this.#composer.addPass(new EffectPass(camera, bloom));
+    const smaa = new SMAAEffect({ preset: SMAAPreset.HIGH });
+    this.#composer.addPass(new EffectPass(camera, bloom, smaa));
   }
 
   resize(w: number, h: number) {

@@ -1,1 +1,1 @@
-export { CanvasRenderer } from './canvasRenderer';
+export { CanvasRenderer } from './CanvasRenderer';
