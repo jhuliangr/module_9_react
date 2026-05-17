@@ -1,4 +1,4 @@
-import { MeshStandardMaterial, Vector3, type Scene } from 'three';
+import { MeshStandardMaterial, Sprite, Vector3, type Scene } from 'three';
 import type { AttackEffect, AttackParticles, PlayerRig } from './types';
 import { prepareMageTemplate } from './character';
 import type { Player } from '#shared/services/websocket';
@@ -22,6 +22,7 @@ import {
   WALK_MIN_DELTA,
 } from '#shared/renderer/utils/constants';
 import { buildRig } from './character';
+import { createNameLabel, disposeNameLabel } from './nameLabel';
 
 const TWO_PI = Math.PI * 2;
 
@@ -33,6 +34,7 @@ interface WorldPos {
 export class PlayerRigs {
   #scene: Scene;
   #rigs: Map<string, PlayerRig> = new Map();
+  #nameLabels: Map<string, Sprite> = new Map();
   #tempVec = new Vector3();
   #tempWorldPos: WorldPos = { x: 0, y: 0 };
 
@@ -65,6 +67,12 @@ export class PlayerRigs {
         p.character,
         isMe ? 0x4cd2ff : 0xff8a4c,
       );
+
+      if (!isMe && !this.#nameLabels.has(p.id)) {
+        const label = createNameLabel(p.name);
+        rig.group.add(label);
+        this.#nameLabels.set(p.id, label);
+      }
 
       const worldPos = this.#resolveWorldPos(p, isMe, renderTime);
       const scenePos = worldToScene(worldPos.x, worldPos.y);
@@ -326,6 +334,12 @@ export class PlayerRigs {
   #removeRig(id: string): void {
     const rig = this.#rigs.get(id);
     if (!rig) return;
+    const label = this.#nameLabels.get(id);
+    if (label) {
+      rig.group.remove(label);
+      disposeNameLabel(label);
+      this.#nameLabels.delete(id);
+    }
     this.#disposeRig(rig);
     this.#rigs.delete(id);
     snapshotInterpolator.drop(id);
