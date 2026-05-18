@@ -8,7 +8,7 @@ A top-down real-time multiplayer arena game built with React, TypeScript, and We
 
 | Main Menu                                                                                    | In Game                                                                                    |
 | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| ![Main menu](https://res.cloudinary.com/dfoqeafey/image/upload/v1776708703/react-game-1.png) | ![In Game](https://res.cloudinary.com/dfoqeafey/image/upload/v1776708779/react-game-2.png) |
+| ![Main menu](https://res.cloudinary.com/dfoqeafey/image/upload/v1779111724/main_menu.png) | ![In Game](https://res.cloudinary.com/dfoqeafey/image/upload/v1776708779/react-game-2.png) |
 
 ---
 
